@@ -1,0 +1,4 @@
+INDEX VERSION 1.126+C:\Users\RT\Fuzz\simpleAppTestRepository\workspace\.metadata\.plugins\org.eclipse.jdt.core
+2076351031.index
+1044218898.index
+4191966099.index

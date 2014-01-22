@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SimpleApp</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_all">Text/Image</string>
+    <string name="title_text">Text</string>
+    <string name="title_image">Image</string>
+    <string name="image_description">Downloaded image</string>
+    <string name="title_activity_web">WebActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="done_id">Done</string>
+
+</resources>
