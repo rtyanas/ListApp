@@ -14,14 +14,15 @@
             android:layout_marginLeft="9dp"
             android:layout_alignParentTop="true"
             android:contentDescription="@string/image_description"/>
-    <TextView
-            android:layout_alignBottom="@+id/imageView"
-            android:layout_width="97dp"
-            android:layout_height="32dp"
-            android:id="@+id/textView"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="66dp"
-            android:layout_alignParentRight="true"
-            android:gravity="center_vertical"/>
-
+    <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+	    <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:id="@+id/textView"
+	            android:layout_marginLeft="66dp"
+	            android:gravity="center_vertical"/>
+    </ScrollView>
+    
 </RelativeLayout>
