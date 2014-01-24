@@ -1,9 +1,9 @@
 package com.fuzz.simpleapp;
 
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
 
@@ -14,39 +14,39 @@ import org.json.JSONObject;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
-import android.app.Activity;
 import android.app.FragmentTransaction;
-import android.app.ListFragment;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+// Leroy
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 
 	static String WEB_PAGE    = "webpage activity";
+
+    public ArrayList<HashMap<String, String>> sampleList=null;
+    public Hashtable<Integer, Bitmap> imageHM=null;
+    public ArrayList<String> textList = null;
+    ArrayAdapter<String> textOnlyAdapter ; 
 
 	SectionsPagerAdapter mSectionsPagerAdapter;
 	static public Context thisMain;
@@ -65,9 +65,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         // Get JSON data 
         getData();
 
-        // Test ---------
-        Model.LoadModel();
-        
+        textOnlyAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, 
+        		((MainActivity)thisMain).textList);
+
         setContentView(R.layout.activity_main);
 
         // Set up the action bar.
@@ -104,8 +104,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         tabImage.setText(mSectionsPagerAdapter.getPageTitle(SectionFragment.IMAGE_ONLY));
         tabImage.setTabListener(this);
         
-        ArrayList<String> textList = new ArrayList<String>();
-
         actionBar.addTab(tabAll);
         actionBar.addTab(tabText);
         actionBar.addTab(tabImage);
@@ -184,8 +182,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     }
     
     /**
-     * A dummy fragment representing a section of the app, but that simply
-     * displays dummy text.
+     * Display the list view of data: text images and both
      */
     public static class SectionFragment extends Fragment {
     	static final public int ALL_ITEMS  = 0;
@@ -203,84 +200,89 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         
         public SectionFragment() {
 
-        	try {
-        		// wait for data to be retrieved 
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+        	// Get data before displaying
         }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_main_dummy, container, false);
-            TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
             
             int tabType = getArguments().getInt(ARG_SECTION_NUMBER);
-            // dummyTextView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
-            // dummyTextView.setText(getArguments().getString(ARG_SECTION_NUMBER));
             
             if(GlobalSettings.mainActivity) Log.d("SectionFragment", "onCreateView, setOnItemSelectedListener, tab: " + tabType);
             
-            String[] ids = new String[Model.Items.size()];
+            String[] ids;
+            ArrayList<AllDataIndex> allDataIndex = new ArrayList<AllDataIndex>(); 
             
-            // Test ----------
-            for (int i= 0; i < ids.length; i++){
+            ((MainActivity)thisMain).textList = ((MainActivity)thisMain).getTextTypes();
+            ((MainActivity)thisMain).textOnlyAdapter.notifyDataSetChanged();
 
-                ids[i] = Integer.toString(i+1);
-            }
-            // Test ------
-            
             switch(tabType) {
             case ALL_ITEMS:
+            	int textSize = ((MainActivity)thisMain).textList.size();
+            	
+            	int size = textSize + ((MainActivity)thisMain).imageHM.size();
+            	int j = 0;
+                for (int i= 0; i < size; i++) {
+                	if(i < textSize)
+                		allDataIndex.add( new MainActivity().new AllDataIndex(i, "text") );
+                	else {
+                		allDataIndex.add( new MainActivity().new AllDataIndex(j, "image") );
+                		j++;
+                	}
+                }
+                
                 ListView listV1 = new ListView(getActivity() );
     	        listV1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
     				@Override
     				public void onItemClick(AdapterView<?> arg0, View arg1,
     						int arg2, long arg3) {
-    					Toast toast = Toast.makeText(getActivity(), "All List"+ (arg2+1) +"!", Toast.LENGTH_LONG);
-    					toast.show();					
     					((MainActivity)thisMain).callUrl("http://www.fuzzproductions.com/");
     				}
     	        }); 
 
-    	        AllItemsAdapter allAdapter = new AllItemsAdapter(getActivity(),R.layout.row, ids);
+    	        AllItemsAdapter allAdapter = new AllItemsAdapter(getActivity(),R.layout.row, allDataIndex);
                 listV1.setAdapter(allAdapter);
                 
                 rootView.addView(listV1);
 
     	        break;
             case TEXT_ONLY:
+                ids = new String[((MainActivity)thisMain).textList.size()];
+
+                for (int i= 0; i < ids.length; i++){
+                    ids[i] = "";
+                }
+                
                 ListView listV2 = new ListView(getActivity() );
     	        listV2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
     				@Override
     				public void onItemClick(AdapterView<?> arg0, View arg1,
     						int arg2, long arg3) {
-    					Toast toast = Toast.makeText(getActivity(), "Text List"+ (arg2+1) +"!", Toast.LENGTH_LONG);
-    					toast.show();					
     					((MainActivity)thisMain).callUrl("http://www.fuzzproductions.com/");
     				}
     	        });
 
-                listV2.setAdapter(new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1, 
-                		((MainActivity)thisMain).getTextTypes()) ); // Model.GetNameList()));
+                listV2.setAdapter( new TextOnlyAdapter(getActivity(),R.layout.row, ids)); 
                 rootView.addView(listV2);
 
     	        break;
             case IMAGE_ONLY: 
+                ids = new String[((MainActivity)thisMain).imageHM.size()];
 
+                for (int i= 0; i < ids.length; i++){
+                    ids[i] = "";
+                }
+                
                 ListView listV3 = new ListView(getActivity() );
     	        listV3.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
     				@Override
     				public void onItemClick(AdapterView<?> arg0, View arg1,
     						int arg2, long arg3) {
-    					Toast toast = Toast.makeText(getActivity(), "Image List"+ (arg2+1) +"!", Toast.LENGTH_LONG);
-    					toast.show();	
     					((MainActivity)thisMain).callUrl("http://www.fuzzproductions.com/");
     				}
     	        }); 
@@ -289,8 +291,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 rootView.addView(listV3);
 
     	        break;
-            }
-                        
+            }   
             
             return (View)rootView;
         }
@@ -310,46 +311,69 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     		}
     }
     
-    
 	static String FUZZ_TEST_DATA = "http://dev.fuzzproductions.com/MobileTest/test.json";
 	static String RECORD_ID   = "id";
 	static String RECORD_TYPE = "type";
 	static String RECORD_DATA = "data";
+	static String RECORD_ICON_NAME = "icon_name";
 
-    JsonParser jsonParser = new JsonParser();
-    JSONArray sample = null;
-    List<NameValuePair> params = new ArrayList<NameValuePair>();
-    ArrayList<HashMap<String, String>> sampleList;
-    
 	private void getData() {
-
+		if(sampleList != null)
+			return;
+		
+		imageHM = new Hashtable<Integer, Bitmap>();
+		
 	    sampleList = new ArrayList<HashMap<String, String>>();
-
+	    
 	    new GetSampleData().execute();
+	    
+    	try {
+    		if(GlobalSettings.mainActivity) Log.d("MainActivity", "getData: sleep 3s");
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
+	    textList = getTextTypes();
 	}
 	
+	public boolean getSampleDataNotDone = true;
 	
     class GetSampleData extends AsyncTask<String, String, String> {
+        JsonParser jsonParser = new JsonParser();
+        JSONArray sample = null;
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
     	
         protected String doInBackground(String... args) {
         	// getting JSON string from URL
 		    JSONObject json = jsonParser.makeHttpRequest(FUZZ_TEST_DATA, "GET",
 		            params);
 		
-		    // Check your log cat for JSON reponse
-		    Log.d("sample JSON: ", json.toString());
+		    // Check log cat for JSON reponse
+            if(GlobalSettings.mainActivity) Log.d("sample JSON: ", json.toString());
 		
 		    try {
 		        sample = json.getJSONArray("sampledata");
 		        // looping through All messages
+	            String id = "";
+	            String type = "";
+	            String data = "";
+
 		        for (int i = 0; i < sample.length(); i++) {
 		            JSONObject c = sample.getJSONObject(i);
 		
-		            // Storing each json item in variable
-		            String id = c.getString(RECORD_ID);
-		            String type = c.getString(RECORD_TYPE);
-		            String data = c.getString(RECORD_DATA);
+		            // init variable if error reading  
+		            id = "";
+		            type = "";
+		            data = "";
+		            try {
+			            id = c.getString(RECORD_ID);
+			            type = c.getString(RECORD_TYPE);
+			            data = c.getString(RECORD_DATA);
+				    } catch (JSONException e) {
+			            if(GlobalSettings.mainActivity) Log.e("GetSampleData", 
+			            		"doInBackground, cannot find field " + e.getMessage() +", "+ e.toString() );
+				    }
 		
 		            // creating new HashMap
 		            HashMap<String, String> map = new HashMap<String, String>();
@@ -358,8 +382,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		            map.put(RECORD_ID, id);
 		            map.put(RECORD_TYPE, type);
 		            map.put(RECORD_DATA, data);
-		
-		            // adding HashList to ArrayList
+		            map.put(RECORD_ICON_NAME, "");
+		            
+		            
+		            // adding HashList (need synchronization) to ArrayList
 		            sampleList.add(map);
 		        }
 		
@@ -369,6 +395,28 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		    
 		    return null;
 	     }
+        
+        protected void onPostExecute(String result) {
+        	String url;
+        	String fileName;
+        	int i = 0;
+            for(HashMap<String, String> hmRec : sampleList) {
+            	if(hmRec.get(RECORD_TYPE).equals("image")) {
+            		url = hmRec.get(RECORD_DATA);
+            		if( ! url.equals("")) {
+            			// use the file name to store images 
+            			fileName = url.substring(url.lastIndexOf("/") + 1);
+            			hmRec.put(RECORD_ICON_NAME, fileName);
+            			new DownloadImageTask(imageHM, new Integer(i) ).execute(url);
+                    	i++;
+            		}
+            	}
+            } // for
+            if(GlobalSettings.mainActivity) Log.d("GetSampleData", "Set imageHM imageHM.size"+ imageHM.size());
+            ((MainActivity)thisMain).getSampleDataNotDone = false;
+            ((MainActivity)thisMain).textOnlyAdapter.notifyDataSetChanged();
+        }
+        
     } // class GetSampleData extends AsyncTask
     
     
@@ -381,20 +429,50 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     		}
     	}
        	
-       	if(GlobalSettings.mainActivity) Log.d("MainActivity", "getTexTypes: "+ textArray);
+       	if(GlobalSettings.mainActivity) Log.d("MainActivity", "getTextTypes: "+ textArray);
        	
     	return textArray;
     }
     
     
-    public static Drawable LoadImageFromWebOperations(String url) {
-        try {
-            InputStream is = (InputStream) new URL(url).getContent();
-            Drawable d = Drawable.createFromStream(is, "src name");
-            return d;
-        } catch (Exception e) {
-            return null;
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        // ImageView bmImage;
+    	Hashtable<Integer, Bitmap> imageHM;
+    	Integer intKey;
+
+        public DownloadImageTask(Hashtable<Integer, Bitmap> imageHM_in, Integer intKey_in) { // ImageView bmImage) {
+            // this.bmImage = bmImage;
+            this.imageHM = imageHM_in;
+            this.intKey = intKey_in;
         }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+                if(GlobalSettings.allItemsAdapter) Log.d("DownloadImageTask", "doInBackground processing, "+ urldisplay);
+            } catch (Exception e) {
+                if(GlobalSettings.allItemsAdapter) Log.e("DownloadImageTask", "Error: "+ e.getMessage() +
+                		", "+ e.toString());
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+        	if(result != null)
+        		imageHM.put(intKey, result);
+        }
+    }
+    
+    class AllDataIndex {
+    	AllDataIndex(int index, String type_in ) {
+    		type = type_in;
+    		i = index;
+    	}
+    	int i;
+    	String type;
     }
     
     
