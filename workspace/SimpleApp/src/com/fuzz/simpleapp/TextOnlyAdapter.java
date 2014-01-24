@@ -11,13 +11,14 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import com.fuzz.simpleapp.MainActivity.SectionFragment;
 
 public class TextOnlyAdapter extends ArrayAdapter<String> {
 
     private final Context context;
-    private final String[] Ids;
+    private final String[] ids;
     private final int rowResourceId;
 
     public TextOnlyAdapter(Context context, int textViewResourceId, String[] objects) {
@@ -25,7 +26,7 @@ public class TextOnlyAdapter extends ArrayAdapter<String> {
         super(context, textViewResourceId, objects);
 
         this.context = context;
-        this.Ids = objects;
+        this.ids = objects;
         this.rowResourceId = textViewResourceId;
 
     }
@@ -33,31 +34,17 @@ public class TextOnlyAdapter extends ArrayAdapter<String> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-//        int id = Integer.parseInt(Ids[position]);
-//        return Model.GetbyId(id).Name;
-    	
-    	
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View rowView = inflater.inflate(rowResourceId, parent, false);
         
-        rowView = textData(rowView, position);        	
+        TextView textView = (TextView) rowView.findViewById(R.id.textView);
+    	
+    	textView.setText( ((MainActivity)context).textList.get(position) );
         
         return rowView;
 
     }
 
-
-    private View textData(View rowView, int position) {
-        
-        // TextView textView = (TextView) rowView.findViewById(R.id.textView);
-        TextView textView = new TextView(context);
-
-        int id = Integer.parseInt(Ids[position]);
-
-        textView.setText(Model.GetbyId(id).Name);
-
-        return (View)textView;
-    }
-
+    
 }
