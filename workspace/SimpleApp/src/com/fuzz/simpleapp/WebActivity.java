@@ -15,7 +15,7 @@ public class WebActivity extends Activity {
 		WebView myWebView = (WebView) findViewById(R.id.webView);
 		String url = getIntent().getStringExtra(MainActivity.WEB_PAGE);
 		myWebView.loadUrl(url);
-
+		finish();
 	}
 
 	@Override
