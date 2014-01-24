@@ -1,7 +1,11 @@
 package com.fuzz.simpleapp;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,23 +15,27 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 
+import com.fuzz.simpleapp.MainActivity.AllDataIndex;
 import com.fuzz.simpleapp.MainActivity.SectionFragment;
 
-public class AllItemsAdapter extends ArrayAdapter<String> {
+public class AllItemsAdapter extends ArrayAdapter<AllDataIndex> {
 
     private final Context context;
-    private final String[] Ids;
+    private final ArrayList<AllDataIndex> ids;
     private final int rowResourceId;
 
-    public AllItemsAdapter(Context context, int textViewResourceId, String[] objects) {
+    public AllItemsAdapter(Context context, int textViewResourceId, ArrayList<AllDataIndex> objects) {
 
         super(context, textViewResourceId, objects);
 
         this.context = context;
-        this.Ids = objects;
+        this.ids = objects;
         this.rowResourceId = textViewResourceId;
 
+        if(GlobalSettings.allItemsAdapter) Log.d("AllItemsAdapter", "constructor num objects: "+ objects.size());
     }
 
     @Override
@@ -37,36 +45,23 @@ public class AllItemsAdapter extends ArrayAdapter<String> {
 
         View rowView = inflater.inflate(rowResourceId, parent, false);
         
-        rowView = allData(rowView, position);        	
+        TextView textView;
+
+        textView = (TextView) rowView.findViewById(R.id.textView);
+        AllDataIndex allDataIndex = ids.get(position);
         
+        if( allDataIndex.type.equals("text")) {
+            textView.setText(((MainActivity)context).textList.get(allDataIndex.i));
+		}
+    	else if( allDataIndex.type.equals("image")) {
+
+    		ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
+    		imageView.setImageBitmap(((MainActivity)context).imageHM.get(allDataIndex.i));
+    	}
+
         return rowView;
 
     }
 
-    
-    private View allData(View rowView, int position) {
-        
-    	ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
-        TextView textView = (TextView) rowView.findViewById(R.id.textView);
-
-        int id = Integer.parseInt(Ids[position]);
-        String imageFile = Model.GetbyId(id).IconFile;
-
-        textView.setText(Model.GetbyId(id).Name);
-        // get input stream
-        InputStream ims = null;
-        try {
-            ims = context.getAssets().open(imageFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // load image as Drawable
-        Drawable d = Drawable.createFromStream(ims, null);
-        // set image to ImageView
-        imageView.setImageDrawable(d);
-
-        return rowView;
-    }
-    
     
 }
