@@ -47,21 +47,23 @@ public class ImageOnlyAdapter extends ArrayAdapter<String> {
     private View imageOnlyData(View rowView, int position) {
         
     	ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
+    	
+    	imageView.setImageBitmap( ((MainActivity)context).imageHM.get(position) );
 
-        int id = Integer.parseInt(Ids[position]);
-        String imageFile = Model.GetbyId(id).IconFile;
-
-        // get input stream
-        InputStream ims = null;
-        try {
-            ims = context.getAssets().open(imageFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // load image as Drawable
-        Drawable d = Drawable.createFromStream(ims, null);
-        // set image to ImageView
-        imageView.setImageDrawable(d);
+//        int id = Integer.parseInt(Ids[position]);
+//        String imageFile = Model.GetbyId(id).IconFile;
+//
+//        // get input stream
+//        InputStream ims = null;
+//        try {
+//            ims = context.getAssets().open(imageFile);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        // load image as Drawable
+//        Drawable d = Drawable.createFromStream(ims, null);
+//        // set image to ImageView
+//        imageView.setImageDrawable(d);
 
         return rowView;
     }
