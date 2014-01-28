@@ -12,12 +12,12 @@
 	{
 		"id": "982",
 		"type": "text",
-		"data": "Speech"
+		"data": "An Android app walks into a bar. Bartender asks, “Can I get you a drink?” The app looks disappointed and says, “That wasn’t my intent.”"
 	},
 	{
 		"id": "5500",
 		"type": "text",
-		"data": "Speech 2"
+		"data": "As a software project approaches release, its mass increases. "
 	},
 	{
 		"id": "100",
@@ -52,10 +52,5 @@
 		"id": "0",
 		"type": "text",
 		"data": ""
-	},
-	{
-		"id": "352352352351241534645856856846856753467456745684679578096780678967893546",
-		"type": "image",
-		"data": "http://www.pavendors.com/images/smileyface.gif"
 	}
 ]
