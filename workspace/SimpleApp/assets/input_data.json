@@ -22,12 +22,12 @@
 	{
 		"id": "100",
 		"type": "image",
-		"data": "http://oglindadevest.ro/wp-content/uploads/2011/06/van_gough_bacon_2.jpg"
+		"data": "https://raw.github.com/rtyanas/ListApp/master/workspace/SimpleApp/assets/hiking_trail.png"
 	},
 	{
 		"id": "51",
 		"type": "image",
-		"data": "http://dev.fuzzproductions.com/iPhoneTest/itunes_icon.jpeg"
+		"data": "https://raw.github.com/rtyanas/ListApp/master/workspace/SimpleApp/assets/sandyhook_panorama_icon.png"
 	},
 	{
 		"id": "44",
