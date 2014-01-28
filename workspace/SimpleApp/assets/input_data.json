@@ -2,7 +2,7 @@
 	{
 		"id": "12",
 		"type": "text",
-		"data": "This is a test"
+		"data": "Hello Android"
 	},
 	{
 		"id": "5465465",
@@ -12,12 +12,12 @@
 	{
 		"id": "982",
 		"type": "text",
-		"data": "Vestibulum nulla nulla, mattis ac convallis vel, rutrum quis elit. Donec quis ante elit. Nullam sodales nisi eu augue aliquet ultrices. Cras adipiscing mattis metus et pharetra. Cras sed sapien eu neque vulputate accumsan. Duis viverra suscipit fringilla. Proin augue urna, semper nec varius sit amet, viverra in nibh. Suspendisse gravida, dolor eu sollicitudin viverra, augue metus interdum tortor, id pellentesque neque justo ut ligula. Aliquam erat volutpat. Praesent blandit risus sed ligula cursus rhoncus. Phasellus adipiscing nibh et est pellentesque mattis. Proin consequat cursus velit, a sodales lacus ultricies ac. Aenean dapibus, justo vitae semper commodo, turpis odio blandit enim, eget ultricies lectus lacus non orci. Praesent nunc turpis, rutrum vel auctor ac, congue ut leo. Duis metus elit, pharetra non aliquam vel, auctor semper odio."
+		"data": "Speech"
 	},
 	{
 		"id": "5500",
 		"type": "text",
-		"data": "Cum sociis natoque penatibus\n\nNulla ornare iaculis<br>tortor at rhoncus. Nulla vitae congue leo.\n"
+		"data": "Speech 2"
 	},
 	{
 		"id": "100",
@@ -28,11 +28,6 @@
 		"id": "51",
 		"type": "image",
 		"data": "https://raw.github.com/rtyanas/ListApp/master/workspace/SimpleApp/assets/sandyhook_panorama_icon.png"
-	},
-	{
-		"id": "44",
-		"type": "image",
-		"data": "http://dev.fuzzproductions.com/iPhoneTest/itunes_icon.jpeg"
 	},
 	{
 		"id": "123",
@@ -47,7 +42,7 @@
 	{
 		"id": "50655",
 		"type": "image",
-		"data": "http://dev.fuzzproductions.com/iPhoneTest/itunes_icon_missing.jpeg"
+		"data": "https://raw.github.com/rtyanas/ListApp/master/workspace/SimpleApp/assets/itunes_icon_missing.jpeg"
 	},
 	{
 		"id": "-654",
@@ -57,26 +52,6 @@
 		"id": "0",
 		"type": "text",
 		"data": ""
-	},
-	{
-		"id": "12123",
-		"type": "image",
-		"data": "http://www.android.com/media/wallpaper/gif/android_logo.gif"
-	},
-	{
-		"id": "312312",
-		"type": "image",
-		"data": "http://wpcdn.padgadget.com/wp-content/uploads/2010/09/twitter-for-ipad-icon.jpg"
-	},
-	{
-		"id": "41241241",
-		"type": "image",
-		"data": "http://cdn.software112.com/Desktop/Icons/Icons/69827-small-phone-icons.gif"
-	},
-	{
-		"id": "568567346",
-		"type": "image",
-		"data": "http://images-5.findicons.com/files/icons/1156/fugue/16/grid.png"
 	},
 	{
 		"id": "352352352351241534645856856846856753467456745684679578096780678967893546",
