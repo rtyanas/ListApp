@@ -7,6 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+/**
+ * List only the images in the IMAGE tab.
+ * 
+ */
 public class ImageOnlyAdapter extends ArrayAdapter<String> {
 
     private final Context context;
@@ -32,6 +36,7 @@ public class ImageOnlyAdapter extends ArrayAdapter<String> {
         
     	ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
     	
+		// Use the imageHM HashMap for images
     	imageView.setImageBitmap( ((MainActivity)context).imageHM.get(position) );
 
         return rowView;
