@@ -20,7 +20,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
   
 import android.util.Log;
-  
+
+/**
+ * Read JSON data through HTTP request then create JSONObject
+ *
+ */
 public class JsonParser {
   
     static InputStream is = null;
