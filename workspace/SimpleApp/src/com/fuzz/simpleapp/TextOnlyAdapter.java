@@ -32,6 +32,7 @@ public class TextOnlyAdapter extends ArrayAdapter<String> {
         
         TextView textView = (TextView) rowView.findViewById(R.id.textView);
     	
+    	// Use the textList ArrayList for text
     	textView.setText( ((MainActivity)context).textList.get(position) );
         
         return rowView;
