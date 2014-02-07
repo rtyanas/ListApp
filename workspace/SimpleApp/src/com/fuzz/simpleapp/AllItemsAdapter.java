@@ -13,6 +13,10 @@ import java.util.ArrayList;
 
 import com.fuzz.simpleapp.MainActivity.AllDataIndex;
 
+/**
+ * List text and images in the TEXT/IMAGE tab
+ *
+ */
 public class AllItemsAdapter extends ArrayAdapter<AllDataIndex> {
 
     private final Context context;
@@ -39,20 +43,22 @@ public class AllItemsAdapter extends ArrayAdapter<AllDataIndex> {
         
         TextView textView;
 
-        textView = (TextView) rowView.findViewById(R.id.textView);
         AllDataIndex allDataIndex = ids.get(position);
         
         if( allDataIndex.type.equals("text")) {
+        	// If text then use the TextView item
+        	// Use the textList ArrayList for text
+            textView = (TextView) rowView.findViewById(R.id.textView);
             textView.setText(((MainActivity)context).textList.get(allDataIndex.i));
 		}
     	else if( allDataIndex.type.equals("image")) {
-
+    		// If image use the ImageView item
+    		// Use the imageHM HashMap for images
     		ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
     		imageView.setImageBitmap(((MainActivity)context).imageHM.get(allDataIndex.i));
     	}
 
         return rowView;
-
     }
 
     
