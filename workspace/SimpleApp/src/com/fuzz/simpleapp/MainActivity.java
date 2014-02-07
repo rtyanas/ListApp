@@ -203,6 +203,17 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         	// Get data before displaying
         }
 
+        private AdapterView.OnItemClickListener goToFuzz = new AdapterView.OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, android.view.View arg1,
+					int arg2, long arg3) {
+                if(GlobalSettings.mainActivity) Log.d("SectionFragment", "onCreateView, OnItemClick Clicked , ALL_ITEMS");
+				((MainActivity)thisMain).callUrl("http://www.fuzzproductions.com/");
+			}
+        }; 
+
+        
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
@@ -220,6 +231,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
             switch(tabType) {
             case ALL_ITEMS:
+                if(GlobalSettings.mainActivity) Log.d("SectionFragment", "onCreateView, setOnItemSelectedListener, ALL_ITEMS");
+
             	int textSize = ((MainActivity)thisMain).textList.size();
             	
             	int size = textSize + ((MainActivity)thisMain).imageHM.size();
@@ -234,43 +247,34 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 }
                 
                 ListView listV1 = new ListView(getActivity() );
-    	        listV1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-    				@Override
-    				public void onItemClick(AdapterView<?> arg0, View arg1,
-    						int arg2, long arg3) {
-    					((MainActivity)thisMain).callUrl("http://www.fuzzproductions.com/");
-    				}
-    	        }); 
+                
+    	        listV1.setOnItemClickListener(goToFuzz);
 
     	        AllItemsAdapter allAdapter = new AllItemsAdapter(getActivity(),R.layout.row, allDataIndex);
                 listV1.setAdapter(allAdapter);
-                
                 rootView.addView(listV1);
 
     	        break;
             case TEXT_ONLY:
+                if(GlobalSettings.mainActivity) Log.d("SectionFragment", "onCreateView, setOnItemSelectedListener, TEXT_ONLY");
+
                 ids = new String[((MainActivity)thisMain).textList.size()];
 
                 for (int i= 0; i < ids.length; i++){
-                    ids[i] = "";
+                    ids[i] = Integer.toString(i);
                 }
                 
                 ListView listV2 = new ListView(getActivity() );
-    	        listV2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    	        listV2.setOnItemClickListener(goToFuzz);
 
-    				@Override
-    				public void onItemClick(AdapterView<?> arg0, View arg1,
-    						int arg2, long arg3) {
-    					((MainActivity)thisMain).callUrl("http://www.fuzzproductions.com/");
-    				}
-    	        });
-
+    	     // listV2.setAdapter( new ArrayAdapter(((MainActivity)thisMain),android.R.layout.simple_list_item_1, ((MainActivity)thisMain).textList)); 
                 listV2.setAdapter( new TextOnlyAdapter(getActivity(),R.layout.row, ids)); 
                 rootView.addView(listV2);
 
     	        break;
             case IMAGE_ONLY: 
+                if(GlobalSettings.mainActivity) Log.d("SectionFragment", "onCreateView, setOnItemSelectedListener, IMAGE_ONLY");
+
                 ids = new String[((MainActivity)thisMain).imageHM.size()];
 
                 for (int i= 0; i < ids.length; i++){
@@ -278,14 +282,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 }
                 
                 ListView listV3 = new ListView(getActivity() );
-    	        listV3.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-    				@Override
-    				public void onItemClick(AdapterView<?> arg0, View arg1,
-    						int arg2, long arg3) {
-    					((MainActivity)thisMain).callUrl("http://www.fuzzproductions.com/");
-    				}
-    	        }); 
+    	        listV3.setOnItemClickListener(goToFuzz); 
 
     	        listV3.setAdapter( new ImageOnlyAdapter(getActivity(),R.layout.row, ids));
                 rootView.addView(listV3);
@@ -429,7 +426,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     		}
     	}
        	
-       	if(GlobalSettings.mainActivity) Log.d("MainActivity", "getTextTypes: "+ textArray);
+       	if(GlobalSettings.falseValue) Log.d("MainActivity", "getTextTypes: "+ textArray);
        	
     	return textArray;
     }
@@ -452,9 +449,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             try {
                 InputStream in = new java.net.URL(urldisplay).openStream();
                 mIcon11 = BitmapFactory.decodeStream(in);
-                if(GlobalSettings.allItemsAdapter) Log.d("DownloadImageTask", "doInBackground processing, "+ urldisplay);
+                if(GlobalSettings.mainActivity) Log.d("DownloadImageTask", "doInBackground processing, "+ urldisplay);
             } catch (Exception e) {
-                if(GlobalSettings.allItemsAdapter) Log.e("DownloadImageTask", "Error: "+ e.getMessage() +
+                if(GlobalSettings.mainActivity) Log.e("DownloadImageTask", "Error: "+ e.getMessage() +
                 		", "+ e.toString());
             }
             return mIcon11;
