@@ -308,9 +308,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     		}
     }
     
-	// static String FUZZ_TEST_DATA = "http://dev.fuzzproductions.com/MobileTest/test.json";
-                                
-	static String FUZZ_TEST_DATA = "https://raw.github.com/rtyanas/ListApp/master/workspace/SimpleApp/assets/input_data.json";
+	static String FUZZ_TEST_DATA = "http://dev.fuzzproductions.com/MobileTest/test.json";
 	static String RECORD_ID   = "id";
 	static String RECORD_TYPE = "type";
 	static String RECORD_DATA = "data";
